@@ -6,17 +6,17 @@ import flow from 'verve/flow';
 
 class OddCounter {
 
-  private list:array;
+  private items:list;
 
   constructor(...items) {
-    this.list = items;
+    this.items = items;
   }
 
   public function add(number:int) {
-    this.list.append(number);
+    this.items.append(number);
   }
 
-  private stream compatible(items:array) {
+  private stream compatible(items:list) {
     launch flow.from(items);
     then flow.filter(item => item % 2 === 0);
   }
@@ -27,7 +27,7 @@ class OddCounter {
   }
 
   public stream pleaseCount() {
-    launch this.compatible(this.list);
+    launch this.compatible(this.items);
     then this.count();
   }
 
