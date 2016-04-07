@@ -1,8 +1,17 @@
 # The perfect programming language
 
+## Principles
+* Aligned to the current reality
+* Highly readable
+* Focused on productivity
+* Simple and beauty math
+* Never repeat yourself
+* Goodbye callbacks, hello streams
+* Keep it simple
+
 ## Stream methods
 ```javascript
-import flow from 'verve/flow';
+import flow from 'core/flow';
 
 class OddCounter {
 
@@ -33,7 +42,7 @@ class OddCounter {
 
 }
 
-OddCounter test = new OddCounter();
+test:OddCounter = new OddCounter();
 launch test.pleaseCount(1,2,3,4,6,7,9);
 then flow.console();
 ```
@@ -57,9 +66,9 @@ switch(location.pathname){
 }
 ```
 
-## Easy for reactive programming
+## Reactive programming friendly
 ```javascript
-stream isInTheBox(leftX, rightX, topY, bottomY) {
+stream onlyInTheBox(leftX, rightX, topY, bottomY) {
   then flow.filter(item => leftX < item.x < rightX);
   then flow.filter(item => topY < item.y < bottomY);
 }
@@ -69,6 +78,6 @@ then flow.map(() => {
   x: Math.random(10, 100, 1),
   y: Math.random(10, 250, 1)
 })
-then isInTheBox()
+then onlyInTheBox(15, 80, 50, 200)
 then flow.console()
 ```
