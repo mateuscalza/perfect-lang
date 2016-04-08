@@ -249,11 +249,77 @@ name:string = 'Jack';
 delete ages[name];
 ```
 
+## Classes, interfaces, mixins
+```javascript
+
+interface iEntity {
+  id:int;
+  name:string;
+}
+
+{ toJSON:function, toHash:function } = import 'core/coding';
+mixin SerializableEntity require iEntity {
+
+  public function toJSON() {
+    return toJSON(this);
+  }
+
+  public function toHash() {
+    return toHash(this);
+  }
+
+}
+
+mixin EntityCasts require iEntity {
+
+  @Cast(int)
+  public function toInt() {
+    return this.id;
+  }
+
+  @Cast(string)
+  public function toString() {
+    return "${this.name} (${this.id})";
+  }
+
+}
+
+abstract class Entity {
+  @Set(private)
+  @Delete(false)
+  id:int;
+
+  name:string = null;
+
+  constructor(id:int = null, name:string = null) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+{ Date:class } = import 'core/date';
+class PersonEntity extends Entity implements iEntity {
+  use SerializableEntity;
+  use EntityCasts;
+
+  birthday:Date;
+
+  public set birthday(birthday:string|null|Date) {
+    this.birthday = birthday is string ? new Date(birthday) : birthday;
+  }
+
+}
+
+jack:PersonEntity = new PersonEntity(1, 'Jack');
+jack.birthday = '1990-08-01';
+jack.toJSON();
+```
+
 ## Terrific functions
 ```javascript
 // Simple return
 function sum(a:float, b:float):float {
-    return a + b;
+  return a + b;
 }
 result:float = sum(1.5, 11.5);
 
@@ -275,10 +341,10 @@ for(item in randomNumbers()){
 
 // One return with multiple data
 function analyzeThirteen(something):object {
-    export.isNumeric = something === 13;
-    export.isWord = something is string and something.lower() === 'thirteen';
-    export.isRomanNumber = something is string and something.upper() === 'XIII';
-    return export;
+  export.isNumeric = something === 13;
+  export.isWord = something is string and something.lower() === 'thirteen';
+  export.isRomanNumber = something is string and something.upper() === 'XIII';
+  return export;
 }
 
 { isWord:boolean, isNumeric:boolean, isRomanNumber:boolean } = analyzeThirteen('treze');
