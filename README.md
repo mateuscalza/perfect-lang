@@ -78,7 +78,7 @@ then Flow.console()
 
 ## Logical test
 ```javascript
-if(300 > x > 100) {
+if(100 < x < 300) {
 
 } else if (x in (7, 15, 37) or x % 2 === 0) {
 
