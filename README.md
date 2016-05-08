@@ -20,7 +20,7 @@ myMultiplier:int = Math.log(10000, 10) ** 3;
 
 // Value
 @Math.unity('cm')
-myValue:float = 9.6;
+myValue:float = 43 * {9.6 + 3};
 
 // Result
 myResult:float = myMultiplier * myValue;
@@ -53,7 +53,7 @@ myPartialList:list = myFirstList[1:5:2]; // (1, 4)
 // Append (add)
 mySecondList.append(12);
 
-// Find index
+// Find index by value
 myFullList.find(3); // 2
 ```
 
@@ -89,20 +89,36 @@ if(300 > x > 100) {
 
 ## Smart switch
 ```javascript
-switch(location.pathname){
+{ request, test } = import 'core/router';
 
-  case '/user':
+switch(request.pathname){
+
+  case '/user' {
     launch new UserController().index();
     break;
-
-  @Result({ matchesAs: ids:list })
-  case /\/user\/([0-9]+)/:
-    launch new HomeController().show(ids[0]);
+  }
+  
+  case '/user' {
+    launch new UserController().index();
     break;
+  }
 
-  default:
+  @Through(matches => { &id:number = matches[0] })
+  case /\/user\/([0-9]+)/ {
+    launch new UsersController().show(id);
+    break;
+  }
+  
+  @Through(params => { &id:number = params.id })
+  case test('/user/{id:number}/edit') {
+    launch new UsersController().edit(id);
+    break;
+  }
+
+  default {
     launch new ErrorController().notFound(location.pathname);
     break;
+  }
 
 }
 ```
@@ -114,27 +130,30 @@ Flow:class = import 'core/flow';
 
 class OddCounter {
 
-  private items:list;
+  @Private
+  items:list;
 
   constructor(...items) {
     this.items = items;
   }
 
-  public function add(number:int) {
+  add(number:int) {
     this.items.append(number);
   }
 
-  private stream compatible(items:list) {
+  @Private
+  stream compatible(items:list) {
     launch Flow.from(items);
     then Flow.filter(item => item % 2 === 0);
   }
 
-  private stream count() {
+  @Private
+  stream count() {
     then Flow.filter(item => item !== null);
     then Flow.count();
   }
 
-  public stream pleaseCount() {
+  stream pleaseCount() {
     launch this.compatible(this.items);
     then this.count();
   }
@@ -258,35 +277,40 @@ interface iEntity {
 }
 
 { toJSON:function, toHash:function } = import 'core/coding';
-mixin SerializableEntity require iEntity {
+@Mixin
+@Require(iEntity)
+class SerializableEntity {
 
-  public function toJSON() {
+  toJSON() {
     return toJSON(this);
   }
 
-  public function toHash() {
+  toHash() {
     return toHash(this);
   }
 
 }
 
-mixin EntityCasts require iEntity {
+@Mixin
+@Require(iEntity)
+class EntityCasts {
 
   @Cast(int)
-  public function toInt() {
+  toInt() {
     return this.id;
   }
 
   @Cast(string)
-  public function toString() {
+  toString() {
     return "${this.name} (${this.id})";
   }
 
 }
 
-abstract class Entity {
-  @Set(private)
-  @Delete(false)
+@Abstract
+class Entity {
+  @AllowSet(private)
+  @AllowDelete(false)
   id:int;
 
   name:string = null;
@@ -298,13 +322,15 @@ abstract class Entity {
 }
 
 { Date:class } = import 'core/date';
-class PersonEntity extends Entity implements iEntity {
-  use SerializableEntity;
-  use EntityCasts;
+@Extends(Entity)
+@Implements(iEntity)
+@Use(SerializableEntity, EntityCasts)
+class PersonEntity {
 
   birthday:Date;
 
-  public set birthday(birthday:string|null|Date) {
+  @Set
+  birthday(birthday:string|null|Date) {
     this.birthday = birthday is string ? new Date(birthday) : birthday;
   }
 
@@ -313,6 +339,24 @@ class PersonEntity extends Entity implements iEntity {
 jack:PersonEntity = new PersonEntity(1, 'Jack');
 jack.birthday = '1990-08-01';
 jack.toJSON();
+
+Cache:class = import 'core/data/cache';
+
+@Singleton
+class PersonService {
+  items:list;
+
+  constructor() { // Called on first time
+    this.items = Cache().stock('items').arrayLink();
+  }
+  
+  insert(person:PersonEntity) {
+    this.items.append(person);
+    return this;
+  }
+}
+
+PersonService().insert(jack);
 ```
 
 ## Terrific functions
