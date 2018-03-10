@@ -27,54 +27,40 @@ float myResult = myMultiplier / divider
 log('Result: ', myResult.to('m') + 'meters')
 ```
 
-## Awesome lists
+## Immutable lists
 ```javascript
-myFirstList:list = (0, 1, 3, 4, 6);
-mySecondList:list = (7, 9, 10);
+object immutable = import 'core/immutable'
+
+immutable.list myFirstList = [0, 1, 3, 4, 6]
+immutable.list mySecondList = [7, 9, 10]
 
 // Concat
-myFullList:list = myFirstList + mySecondList; // (0, 1, 3, 4, 6, 7, 9, 10)
+immutable.list myFullList = myFirstList + mySecondList // [0, 1, 3, 4, 6, 7, 9, 10]
 
 // Repeat
-myTripleList:list = mySecondList * 3; // (7, 9, 10, 7, 9, 10, 7, 9, 10)
+immutable.list myTripleList = mySecondList * 3 // [7, 9, 10, 7, 9, 10, 7, 9, 10]
 
 // Item by index
-myItem:int = myFirstList[2]; // 1
-
-// Delete item by index (the last item)
-delete myFirstList[-1];
+int myItem = myFirstList[2] // 1
 
 // Slice
-myPartialList:list = myFirstList[1:5]; // (1, 3, 4, 6)
+immutable.list myPartialList = myFirstList[1:5] // [1, 3, 4, 6]
 
 // Slice with step
-myPartialList:list = myFirstList[1:5:2]; // (1, 4)
+immutable.list myPartialList2 = myFirstList[1:5:2] // (1, 4)
 
-// Append (add)
-mySecondList.append(12);
+// New list without item by index (the last item)
+immutable.list listWithoutLastItem = myFirstList.without(-1)
+
+// Append item (add)
+immutable.list listWithoutLastItem = mySecondList.append(12)
 
 // Find index by value
-myFullList.find(3); // 2
+int index = myFullList.find(3) // 2
 ```
 
-## Reactive programming friendly
-```javascript
-Math:class = import 'core/math';
-Flow:class = import 'core/flow';
-{ console:function } = import 'core/log';
 
-stream onlyInnerRange(start, end) {
-  then Flow.filter(item => leftX < item < rightX);
-}
 
-@Math.unity('s')
-myInterval:int = 3; // 3 seconds
-
-launch Flow.interval(myInterval)
-then Flow.map(() => Math.random(10, 100, 1))
-then onlyInnerRange(5, 10)
-then Flow.console()
-```
 
 ## Logical test
 ```javascript
