@@ -27,6 +27,26 @@ float myResult = myMultiplier / divider
 log('Result: ', myResult.to('m') + 'meters')
 ```
 
+## GPU module
+```javascript
+object gpu = import 'core/gpu'
+object math = import 'core/math'
+{ function log } = import 'core/console'
+
+gpu.float x = 123.45678
+gpu.float y = math.pi
+
+gpu.float result = x gpu.* y // Custom operators!
+
+log('Result: ', result)
+
+```
+
+## SIMD and GPU
+```javascript
+
+```
+
 ## Immutable lists
 ```javascript
 object immutable = import 'core/immutable'
@@ -75,12 +95,6 @@ int result = newFullList
   .map(value => value * 2)
   .reduce((acc, value) => acc - value, 100)
 ```
-
-# GPU module
-```javascript
-
-```
-
 
 ## Logical test
 ```javascript
