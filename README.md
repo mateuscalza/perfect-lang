@@ -12,19 +12,19 @@
 
 ## Powerful math
 ```javascript
-Math:class = import 'core/math';
-{ console:function } = import 'core/log';
+object math = import 'core/math'
+object unit = import 'core/math/unit'
+{ function log } = import 'core/console'
 
-// Multiplier
-myMultiplier:int = Math.log(10000, 10) ** 3;
+// Divider
+int divider = 3
 
 // Value
-@Math.unity('cm')
-myValue:float = 43 * {9.6 + 3};
+unit.cm myValue = 43 * {9.6 + 3}
 
 // Result
-myResult:float = myMultiplier * myValue;
-console(myResult.to('m') + 'meters');
+float myResult = myMultiplier / divider
+log('Result: ', myResult.to('m') + 'meters')
 ```
 
 ## Awesome lists
