@@ -42,6 +42,8 @@ immutable.list myTripleList = mySecondList * 3 // [7, 9, 10, 7, 9, 10, 7, 9, 10]
 
 // Item by index
 int myItem = myFirstList[2] // 1
+// or
+int myItem = myFirstList.get(2) // 1
 
 // Slice
 immutable.list myPartialList = myFirstList[1:5] // [1, 3, 4, 6]
@@ -55,12 +57,24 @@ immutable.list listWithoutLastItem = myFirstList.without(-1)
 // Append item (add)
 immutable.list listWithoutLastItem = mySecondList.append(12)
 
-// Find index by value
+// Find first index for value
 int index = myFullList.find(3) // 2
+
+// Find all indexes
+immutable.list indexed = myFullList.findAll(3)
+
+// Set item
+// Wrong way
+myFullList[4] = 33 // Throws an error
+// Right way
+immutable.list newFullList = myFullList.set(4, 33)
+
+// Map, filter and reduce
+int result = newFullList
+  .filter(value => value % 3 == 0)
+  .map(value => value * 2)
+  .reduce((acc, value) => acc ** value, 1)
 ```
-
-
-
 
 ## Logical test
 ```javascript
