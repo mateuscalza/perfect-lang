@@ -73,8 +73,14 @@ immutable.list newFullList = myFullList.set(4, 33)
 int result = newFullList
   .filter(value => value % 3 == 0)
   .map(value => value * 2)
-  .reduce((acc, value) => acc ** value, 1)
+  .reduce((acc, value) => acc - value, 100)
 ```
+
+# GPU module
+```javascript
+
+```
+
 
 ## Logical test
 ```javascript
