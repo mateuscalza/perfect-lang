@@ -29,7 +29,7 @@ log('Result: ', myResult.to('m') + 'meters')
 
 ## GPU module
 ```javascript
-object gpu = import 'core/gpu'
+object gpu = import 'gpu'
 object math = import 'core/math'
 { function log } = import 'core/console'
 
@@ -43,13 +43,13 @@ log('Result: ', result)
 
 ## SIMD and GPU
 ```javascript
-object gpu = import 'core/gpu'
-object simd = import 'core/simd'
+object gpu = import 'gpu'
+object simd = import 'simd'
 
 gpu.vector of gpu.int a = [1, 2, 3, 4]
 gpu.vector of gpu.int b = [5, 6, 7, 8]
 
-gpu.vector of gpu.int sumResult = simd(a, b, (aValue, bValue): aValue gpu.+ bValue)
+gpu.vector of gpu.int sumResult = simd(a, b, (aValue, bValue) => aValue gpu.+ bValue)
 
 log('Result: ', sumResult)
 ```
@@ -98,16 +98,16 @@ immutable.list newFullList = myFullList.set(4, 33)
 
 // Map, filter and reduce
 int result = newFullList
-  .filter(value: value % 3 == 0 or value % 7 == 0)
-  .map(value: value * 2)
-  .reduce((acc, value): acc - value, 100)
+  .filter(value => value % 3 == 0 or value % 7 == 0)
+  .map(value => value * 2)
+  .reduce((acc, value) => acc - value, 100)
 ```
 
 ## Logical test
 ```javascript
 if (100 < x < 300) {
 
-} else if (x in [7, 15, 37] or x % 2 = 0) {
+} else if (x in [7, 15, 37] or x % 2 == 0) {
 
 } else {
 
@@ -121,12 +121,23 @@ if (100 < x < 300) {
 itemsApi = import '/api/items'
 
 stringSwitch routes = stringSwitch({
-  '/items': async (): await itemsApi.findAll(),
-  /\/items\/(\d+)/: async id: await itemsApi.get(id),
-  [stringSwitch.default()]: (): throw errors.notFound(),
+  '/items': async () => await itemsApi.findAll(),
+  /\/items\/(\d+)/: async id => await itemsApi.get(id),
+  [stringSwitch.default()]: () => throw errors.notFound(),
 })
 
 listen(async request: await routes.match(request.path), 80)
+```
+
+## Cluster
+```javascript
+{ function listen } = import 'http'
+function cluster = import 'cluster'
+
+function response = () => 'Hello World!'
+function masterResponse = () => 'Hello world from master!'
+
+listen(cluster(isMaster => isMaster ? masterResponse() : response()), 80)
 ```
 
 # Deprecated
