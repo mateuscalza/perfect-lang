@@ -151,6 +151,7 @@ await storage.set('count', count + 1)
 ## Math - Matrices
 ```javascript
 object matrix = import 'core/math/matrix'
+{ function log } = import 'core/console'
 
 matrix screen = [
   [1, 2, 3],
@@ -168,6 +169,7 @@ log('Squared screen: ', squaredScreen)
 ## Math - Matrices on GPU
 ```javascript
 object matrix = import 'gpu/math/matrix' // Use GPU math!
+{ function log } = import 'core/console'
 
 matrix screenA = list.generate(0, 99, ()
   => list.generate(0, 99, () => math.randomRange(0, 50))
@@ -180,28 +182,6 @@ matrix screenB = list.generate(0, 99, ()
 matrix resultScreen = screenA matrix.+ screenB
 
 log('Screen: ', resultScreen)
-```
-
-## Math - Equation
-```javascript
-{ function equation, function variable } = import 'core/math/equation'
-
-equation solution = equation(() =>
-  equation.(
-    variable('y') = variable('x') ** 2 + 3
-  )
-))
-
-// Is the same of
-// equation solution = equation(() =>
-//   variable('y') equation.= variable('x') equation.** 2 equation.+ 3
-// )
-
-try {
-  list result = solution.runLimited('x', list.generate(0, 99, acc => acc + 1, 0))
-} catch (error) {
-  
-}
 ```
 
 ## Chains
@@ -255,6 +235,47 @@ html content = (
 )
 
 listen(() => content, 80)
+```
+
+## Math - Equation
+```javascript
+{ function equation, function variable } = import 'core/math/algebra'
+{ function log } = import 'core/console'
+
+equation solution = equation(() =>
+  equation.(
+    variable('y') = variable('x') ** 2 + 3
+  )
+))
+
+// Is the same of
+// equation solution = equation(() =>
+//   variable('y') equation.= variable('x') equation.** 2 equation.+ 3
+// )
+
+list result = solution.runLimited('x', list.generate(0, 99, acc => acc + 1, 0))
+log('Set of results: ', result)
+```
+
+## Linear system
+```javascript
+{ function equation, function variable as var } = import 'core/math/algebra'
+{ function log } = import 'core/console'
+
+equation solution = equation(() => [
+  equation.(
+    var('x') - 2 * var('y') - 2 * var('z') = -1
+  ),
+  equation.(
+    var('x') - var('y') + var('z') = -2
+  ),
+  equation.(
+    2 * var('x') + var('y') + 3 * var('z') = 1
+  )
+]))
+
+object result = solution.solve()
+log('X is ', result.x, 'Y is ', result.y, 'Z is', result.z)
 ```
 
 
