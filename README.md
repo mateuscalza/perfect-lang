@@ -30,7 +30,7 @@ log('Result: ', myResult.to('m') + 'meters')
 ## GPU
 ```javascript
 object gpu = import 'gpu'
-object math = import 'core/math'
+object math = import 'gpu/math'
 { function log } = import 'core/console'
 
 gpu.float x = 123.45678
@@ -148,9 +148,75 @@ int count = await storage.get('count')
 await storage.set('count', count + 1)
 ```
 
-## LINQ and chains
+## Math - Matrices
 ```javascript
+object matrix = import 'core/math/matrix'
 
+matrix screen = [
+  [1, 2, 3],
+  [9, 8, 7],
+  [5, 1, 5],
+]
+
+int determinant = screen.determinant()
+log('Determinant of screen: ', determinant)
+
+matrix squaredScreen = screen matrix.** 2
+log('Squared screen: ', squaredScreen)
+```
+
+## Math - Matrices on GPU
+```javascript
+object matrix = import 'gpu/math/matrix' // Use GPU math!
+
+matrix screenA = list.generate(0, 99, ()
+  => list.generate(0, 99, () => math.randomRange(0, 50))
+) // 100x100
+
+matrix screenB = list.generate(0, 99, ()
+  => list.generate(0, 99, () => math.randomRange(0, 50))
+) // 100x100
+
+matrix resultScreen = screenA matrix.+ screenB
+
+log('Screen: ', resultScreen)
+```
+
+## Chains
+```javascript
+{ function objectOrder } = import 'core/utils/ordering'
+{ function average, function median } = import 'core/math/statistic'
+
+interface Person {
+  string name,
+  int age,
+}
+
+list of Person people = [
+  { id: 1, name: 'Joseph', age: 31, },
+  { id: 2, name: 'John', age: 21, },
+  { id: 3, name: 'Mariah', age: 38, },
+  { id: 4, name: 'Charlotte', age: 22, },
+]
+
+float medianOfAges = people
+  .value('age')
+  .@median()
+
+string text = people
+  .filter(person => person < 25)
+  .map(person => `${person.name} has ${person.age} years old.`)
+  .join('; ')
+
+list of string peopleWithMoreThan23 = people
+  .filter(person => person > 23)
+  .value('age')
+  .@average()
+
+list peopleLessThan23 = people
+  .filter(person => person < 23)
+  .order(objectOrder('age', 'descending'))
+  .select('id', 'name')
 ```
 
 ## Markup
@@ -178,7 +244,6 @@ object quantum = import 'quantum'
 
 quantum.qubit value = 0b00
 ```
-
 
 # Deprecated
 
