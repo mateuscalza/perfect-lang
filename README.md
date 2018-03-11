@@ -20,7 +20,7 @@ object unit = import 'core/math/unit'
 int divider = 3
 
 // Value
-unit.cm myValue = 43 * {9.6 + 3}
+unit.cm myValue = 43 * (9.6 + 3) // Custom types!
 
 // Result
 float myResult = myMultiplier / divider
