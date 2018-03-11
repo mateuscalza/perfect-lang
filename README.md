@@ -162,12 +162,12 @@ if (100 < x < 300) {
 itemsApi = import '/api/items'
 
 router app = router()
-  .on('get', '/items', () => await itemsApi.all())
-  .on('post', '/items', (null, body) => await itemsApi.insert(body))
-  .on('get', '/items/:id', ({ id }) => await itemsApi.get(id))
+  .on('get', '/items', async () => await itemsApi.all())
+  .on('post', '/items', async (null, body) => await itemsApi.insert(body))
+  .on('get', '/items/:id', async ({ id }) => await itemsApi.get(id))
   .on('*', '*', ({ id }) => throw errors.notFound())
 
-listen(async request: await app.match(request), 80)
+listen(async request => await app.match(request), 80)
 ```
 
 ## Cluster
