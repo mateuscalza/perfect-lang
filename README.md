@@ -39,12 +39,19 @@ gpu.float y = math.pi
 gpu.float result = x gpu.* y // Custom operators!
 
 log('Result: ', result)
-
 ```
 
 ## SIMD and GPU
 ```javascript
+object gpu = import 'core/gpu'
+object simd = import 'core/simd'
 
+gpu.vector of gpu.int a = [1, 2, 3, 4]
+gpu.vector of gpu.int b = [5, 6, 7, 8]
+
+gpu.vector of gpu.int sumResult = simd(a, b, (aValue, bValue): aValue gpu.+ bValue)
+
+log('Result: ', sumResult)
 ```
 
 ## Immutable lists
@@ -91,9 +98,9 @@ immutable.list newFullList = myFullList.set(4, 33)
 
 // Map, filter and reduce
 int result = newFullList
-  .filter(value => value % 3 == 0)
-  .map(value => value * 2)
-  .reduce((acc, value) => acc - value, 100)
+  .filter(value: value % 3 == 0)
+  .map(value: value * 2)
+  .reduce((acc, value): acc - value, 100)
 ```
 
 ## Logical test
