@@ -121,8 +121,8 @@ if (100 < x < 300) {
 itemsApi = import '/api/items'
 
 stringSwitch routes = stringSwitch({
-  '/items': async () => await itemsApi.findAll(),
-  /\/items\/(\d+)/: async id => await itemsApi.get(id),
+  '/items': () => await itemsApi.findAll(),
+  /\/items\/(\d+)/: id => await itemsApi.get(id),
   [stringSwitch.default()]: () => throw errors.notFound(),
 })
 
@@ -139,6 +139,20 @@ function masterResponse = () => 'Hello world from master!'
 
 listen(cluster(isMaster => isMaster ? masterResponse() : response()), 80)
 ```
+
+## Storage
+```javascript
+object storage = import 'fs/storage'
+
+int count = await storage.get('count')
+await storage.set('count', count + 1)
+```
+
+## LINQ and chains
+```javascript
+
+```
+
 
 # Deprecated
 
