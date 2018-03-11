@@ -27,7 +27,7 @@ float myResult = myMultiplier / divider
 log('Result: ', myResult.to('m') + 'meters')
 ```
 
-## GPU module
+## GPU
 ```javascript
 object gpu = import 'gpu'
 object math = import 'core/math'
@@ -116,17 +116,17 @@ if (100 < x < 300) {
 
 ## Routing
 ```javascript
-{ function listen, object errors } = import 'http'
+{ function listen, function router, object errors } = import 'http'
 { function stringSwitch } = import 'core/utils/decision'
 itemsApi = import '/api/items'
 
-stringSwitch routes = stringSwitch({
-  '/items': () => await itemsApi.findAll(),
-  /\/items\/(\d+)/: id => await itemsApi.get(id),
-  [stringSwitch.default()]: () => throw errors.notFound(),
-})
+router app = router()
+  .on('get', '/items', () => await itemsApi.all())
+  .on('post', '/items', (null, body) => await itemsApi.insert(body))
+  .on('get', '/items/:id', ({ id }) => await itemsApi.get(id))
+  .on('*', '*', ({ id }) => throw errors.notFound())
 
-listen(async request: await routes.match(request.path), 80)
+listen(async request: await app.match(request), 80)
 ```
 
 ## Cluster
