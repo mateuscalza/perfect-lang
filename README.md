@@ -186,9 +186,16 @@ log('Screen: ', resultScreen)
 ```javascript
 { function equation, function variable } = import 'core/math/equation'
 
-equation solution = equation(
-  variable('y') equation.= variable('x') equation.** 2 equation.+ 3
-)
+equation solution = equation(() =>
+  equation.(
+    variable('y') = variable('x') ** 2 + 3
+  )
+))
+
+// Is the same of
+// equation solution = equation(() =>
+//   variable('y') equation.= variable('x') equation.** 2 equation.+ 3
+// )
 
 try {
   list result = solution.runLimited('x', list.generate(0, 99, acc => acc + 1, 0))
