@@ -153,6 +153,32 @@ await storage.set('count', count + 1)
 
 ```
 
+## Markup
+```javascript
+object html = import 'markup/html'
+{ function listen } = import 'http'
+
+{ function article, function h2 } = html
+
+html content = (
+  <article>
+    <h2>Just a test!<h2>
+  </article>
+)
+
+listen(() => content, 80)
+```
+
+
+# Mad science
+
+## Quantum
+```javascript
+object quantum = import 'quantum'
+
+quantum.qubit value = 0b00
+```
+
 
 # Deprecated
 
