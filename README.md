@@ -98,21 +98,23 @@ immutable.list newFullList = myFullList.set(4, 33)
 
 // Map, filter and reduce
 int result = newFullList
-  .filter(value: value % 3 == 0)
+  .filter(value: value % 3 == 0 or value % 7 == 0)
   .map(value: value * 2)
   .reduce((acc, value): acc - value, 100)
 ```
 
 ## Logical test
 ```javascript
-if(100 < x < 300) {
+if (100 < x < 300) {
 
-} else if (x in (7, 15, 37) or x % 2 === 0) {
+} else if (x in [7, 15, 37] or x % 2 = 0) {
 
 } else {
 
 }
 ```
+
+# Deprecated
 
 ## Smart switch
 ```javascript
@@ -171,12 +173,12 @@ class OddCounter {
   @Private
   stream compatible(items:list) {
     launch Flow.from(items);
-    then Flow.filter(item => item % 2 === 0);
+    then Flow.filter(item => item % 2 == 0);
   }
 
   @Private
   stream count() {
-    then Flow.filter(item => item !== null);
+    then Flow.filter(item => item != null);
     then Flow.count();
   }
 
@@ -412,9 +414,9 @@ for(item in randomNumbers()){
 
 // One return with multiple data
 function analyzeThirteen(something):object {
-  export.isNumeric = something === 13;
-  export.isWord = something is string and something.lower() === 'thirteen';
-  export.isRomanNumber = something is string and something.upper() === 'XIII';
+  export.isNumeric = something == 13;
+  export.isWord = something is string and something.lower() == 'thirteen';
+  export.isRomanNumber = something is string and something.upper() == 'XIII';
   return export;
 }
 
@@ -451,7 +453,7 @@ for(item in import './random-number'){
 Flow:class = import 'core/flow';
 export.aWord:string = 'TOMATO';
 stream export.aStreamPart(){
-    then Flow.filter(item => item !== 2);
+    then Flow.filter(item => item != 2);
     then Flow.debounce(500);
 }
 function export.someFunction(){
@@ -462,5 +464,5 @@ return export;
 { someFunction:function, aStreamPart:stream } = import './some-api';
 // or
 api:object = import './some-api';
-if(api.aWord === 'ONION'){}
+if(api.aWord =='ONION'){}
 ```
