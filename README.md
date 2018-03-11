@@ -60,6 +60,7 @@ log('Result: ', sumResult)
 { object logObserver } = import 'core/console'
 
 interface Person {
+  int id,
   string name,
   int age,
 }
