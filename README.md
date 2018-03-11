@@ -182,6 +182,21 @@ matrix resultScreen = screenA matrix.+ screenB
 log('Screen: ', resultScreen)
 ```
 
+## Math - Equation
+```javascript
+{ function equation, function variable } = import 'core/math/equation'
+
+equation solution = equation(
+  variable('y') equation.= variable('x') equation.** 2 equation.+ 3
+)
+
+try {
+  list result = solution.runLimited('x', list.generate(0, 99, acc => acc + 1, 0))
+} catch (error) {
+  
+}
+```
+
 ## Chains
 ```javascript
 { function objectOrder } = import 'core/utils/ordering'
