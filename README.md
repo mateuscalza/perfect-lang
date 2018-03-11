@@ -6,7 +6,7 @@
 * Focused on productivity
 * Simple and beauty math
 * Never repeat yourself
-* Goodbye callbacks, hello streams
+* Goodbye callbacks, goodbye streams, hello observables!
 * Keep it simple
 * Be reactive
 
@@ -52,6 +52,46 @@ gpu.vector of gpu.int b = [5, 6, 7, 8]
 gpu.vector of gpu.int sumResult = simd(a, b, (aValue, bValue) => aValue gpu.+ bValue)
 
 log('Result: ', sumResult)
+```
+
+## Observables
+```javascript
+{ function readFile } = import 'fs'
+{ object logObserver } = import 'core/console'
+
+interface Person {
+  string name,
+  int age,
+}
+
+readFile('./resouces/people.csv', readFile.strategies.lineByLine)
+  .filter((line, lineIndex) => lineIndex !== 0) // Skip header line
+  .map(line => {
+    [
+      int id,
+      string name,
+      int age,
+    ] = line.split(',')
+    return {
+      id,
+      name,
+      age,
+    } as Person
+  })
+  .pipe(logObserver)
+```
+
+## Read file
+```javascript
+{ function readFile } = import 'fs'
+{ function log } = import 'core/console'
+
+string fileContent = await readFile( // await on observable stops on the first item and return
+  './resouces/text.txt',
+  readFile.strategies.full
+)
+
+log('Text: ', fileContent)
 ```
 
 ## Immutable lists
