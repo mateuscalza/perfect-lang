@@ -114,6 +114,21 @@ if (100 < x < 300) {
 }
 ```
 
+## Routing
+```javascript
+{ function listen, object errors } = import 'http'
+{ function stringSwitch } = import 'core/utils/decision'
+itemsApi = import '/api/items'
+
+stringSwitch routes = stringSwitch({
+  '/items': async (): await itemsApi.findAll(),
+  /\/items\/(\d+)/: async id: await itemsApi.get(id),
+  [stringSwitch.default()]: (): throw errors.notFound(),
+})
+
+listen(async request: await routes.match(request.path), 80)
+```
+
 # Deprecated
 
 ## Smart switch
