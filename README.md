@@ -257,19 +257,19 @@ greetings('Calza', 'Mr.')
 
 // Custom unit describing literal objects
 unit euroOptions {
-  float(dolarCurrent) = 1
+  float(dollarCurrent) = 1
 }
 
 // Custom unit called as a function
 unit function euro(int(value) = 0, euroOptions(options)) {
   return {
     value,
-    asDolars: () => value * options.dolarCurrent
+    asDollars: () => value * options.dollarCurrent
   }
 }
 
-myMoney = euro(123) // Or euro(123, { dolarCurrent: 1 }) // Or <euro dolarCurrent={1}>{123}</euro>
-log(myMoney.asDolars())
+myMoney = euro(123) // Or euro(123, { dollarCurrent: 1 }) // Or <euro dolarCurrent={1}>{123}</euro>
+log(myMoney.asDollars())
 ```
 
 ## Custom unit used as HTML
