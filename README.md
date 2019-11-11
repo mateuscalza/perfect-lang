@@ -157,7 +157,40 @@ listen(80)
   })
 ```
 
-## Import and export
+## Export, import and custom operator
+
+Export
+```javascript
+unit person {
+  string(name).required(),
+}
+
+operator function add(person(a), person(b)) {
+  return [a, b]
+}
+
+return {
+  person,
+  add,
+}
+```
+
+Import
+```javascript
+{ person, add as + } = import('local/person')
+{ log } = import('core/console')
+
+alfred = person({
+  name: 'Alfred',
+})
+jarvis = person({
+  name: 'Jarvis',
+})
+
+butlers = alfred + jarvis
+
+log(butlers)
+```
 
 ## Strings
 
@@ -222,4 +255,3 @@ log(
   <currency prefix='R$'>23.45</currency>
 )
 ```
-
