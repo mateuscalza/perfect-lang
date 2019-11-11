@@ -197,7 +197,7 @@ unit function euro(int(value) = 0, euroOptions(options)) {
   }
 }
 
-myMoney = euro(123)
+myMoney = euro(123) // Or euro(123, { dolarCurrent: 1 }) // Or <euro dolarCurrent={1}>{123}</euro>
 log(myMoney.asDolars())
 ```
 
