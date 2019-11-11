@@ -48,6 +48,7 @@ log('Result:', result)
 { simd } = import('core/gpu')
 { add as +, multiply as * } = import('core/gpu/math')
 { meters as m } = import('core/units')
+{ log } = import('core/console')
 
 a = vector([1, 2, 3, 4])
 b = vector([5, 6, 7, 8])
@@ -171,3 +172,42 @@ listen(80)
 ### Optional chaining and coalesce
 
 ### Function and parameter validation
+
+### Custom units
+```javascript
+{ int, float, string } = import('core/units')
+{ log } = import('core/console')
+{ span } = import('core/utils/html')
+
+// Custom unit describing literal objects
+unit euroOptions {
+  float(dolarCurrent) = 1
+}
+
+// Custom unit called as a function
+unit function euro(int(value) = 0, euroOptions(options)) {
+  return {
+    value,
+    asDolars: () => value * options.dolarCurrent
+  }
+}
+
+myMoney = euro(123)
+log(myMoney.asDolars())
+
+unit currencyOptions {
+  string(prefix) = '$'
+}
+
+// Custom unit called as component
+unit function currency(value, currencyOptions(options)) {
+  return (
+    <span>{`${options.prefix} ${value}`}</span>
+  )
+}
+
+log(
+  <currency prefix='R$'>23.45</currency>
+)
+```
+
