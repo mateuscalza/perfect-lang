@@ -22,7 +22,7 @@ divider = int(3) // Implicit
 myValue = m(9) + cm(3)  // Default operators handle default units
 
 // Result
-myResult = myMultiplier / divider
+myResult = myValue / divider
 log(cm(myResult))
 ```
 
