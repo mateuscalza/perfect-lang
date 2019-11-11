@@ -175,9 +175,8 @@ listen(80)
 
 ### Custom units
 ```javascript
-{ int, float, string } = import('core/units')
+{ int, float } = import('core/units')
 { log } = import('core/console')
-{ span } = import('core/utils/html')
 
 // Custom unit describing literal objects
 unit euroOptions {
@@ -194,6 +193,13 @@ unit function euro(int(value) = 0, euroOptions(options)) {
 
 myMoney = euro(123)
 log(myMoney.asDolars())
+```
+
+### Custom unit used as HTML
+```javascript
+{ string } = import('core/units')
+{ log } = import('core/console')
+{ span } = import('core/utils/html')
 
 unit currencyOptions {
   string(prefix) = '$'
