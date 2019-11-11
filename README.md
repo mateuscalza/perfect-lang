@@ -62,7 +62,7 @@ log('Result: ', sumResult)
 ## Observables and filesystem
 ```javascript
 { lines } = import('core/filesystem')
-{ map, filter, log } = import('core/observable/operators')
+{ map, filter, log } = import('core/observables')
 { meters } = import('core/units')
 
 lines('./resouces/terrains.csv')
@@ -122,39 +122,42 @@ if (100 < x < 300) {
 ```javascript
 { listen, pathMatch, errors } = import('core/http')
 { div, h1, a } = import('core/utils/html')
+{ do } = import('core/observables')
 
-listen(80)
-  .pipe((request, response) => {
+listen(8080)
+  .pipe(
   
-    switch request.path {
-      // Exact string
-      case '/' {
-        response.html(
-          <div>
-            <h1>Hello world!</h1>
-            <a href='https://github.com/mateuscalza'>Author</a>
-          </div>
-        )
+    do({ request, response }) => {
+      switch request.path {
+        // Exact string
+        case '/' {
+          response.html(
+            <div>
+              <h1>Hello world!</h1>
+              <a href='https://github.com/mateuscalza'>Author</a>
+            </div>
+          )
+        }
+
+        // RegExp
+        case /\/user\/([0-9]+)/i as result {
+          response.text(`Asking for user number ${result.matches[0]}`)
+
+        }
+
+        // Function
+        case pathMatch('/books/:number') as result {
+          response.text(`Asking for book number ${result.number}`)
+        }
+
+        // Others
+        default {
+          response.error(errors.notFound())
+        }
       }
-      
-      // RegExp
-      case /\/user\/([0-9]+)/i as result {
-        response.text(`Asking for user number ${result.matches[0]}`)
-      
-      }
-        
-      // Function
-      case pathMatch('/books/:number') as result {
-        response.text(`Asking for book number ${result.number}`)
-      }
-      
-      // Others
-      default {
-        response.error(errors.notFound())
-      }
-    }
-  
-  })
+    })
+
+  )
 ```
 
 ## Export, import and custom operator
