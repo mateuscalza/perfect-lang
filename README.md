@@ -167,13 +167,19 @@ listen(80)
 
 ## Parallel and async/await
 
-## Tricks
+## Function and parameter validation
+```javascript
+{ int, float, string } = import('core/units')
+{ log } = import('core/console')
 
-### Optional chaining and coalesce
+function greetings(string(lastName).required().minLength(3).maxLength(50), string(pronoun).minLength(3).maxLength(50) = '') {
+  log(`Hello ${pronoun} ${lastName}`)
+}
 
-### Function and parameter validation
+greetings('Calza', 'Mr.')
+```
 
-### Custom units
+## Custom units
 ```javascript
 { int, float } = import('core/units')
 { log } = import('core/console')
@@ -195,7 +201,7 @@ myMoney = euro(123)
 log(myMoney.asDolars())
 ```
 
-### Custom unit used as HTML
+## Custom unit used as HTML
 ```javascript
 { string } = import('core/units')
 { log } = import('core/console')
