@@ -6,7 +6,7 @@
 * Focused on productivity
 * Simple and beauty math
 * Never repeat yourself
-* Goodbye callbacks, goodbye streams, hello observables!
+* Goodbye callbacks, hello observables!
 * Keep it simple
 * Be reactive
 
@@ -158,8 +158,16 @@ listen(80)
 
 ## Import and export
 
-## Statistics
-
 ## Strings
 
 ## Immutable by design
+
+## Events
+
+## Parallel and async/await
+
+## Tricks
+
+### Optional chaining and coalesce
+
+### Function and parameter validation
