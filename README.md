@@ -192,13 +192,49 @@ butlers = alfred + jarvis
 log(butlers)
 ```
 
-## Strings
-
 ## Immutable by design
+```javascript
+{ vector } = import('core/units')
+{ trim } = import('core/string')
 
-## Events
+myVector = vector(['a', 'b', 'c', 'd', 'e', 'f'])
+
+log(myVector.getAt(1)) // 'b'
+
+newVector = myVector.setAt(1, 'g')
+log(myVector.getAt(1)) // 'b'
+log(newVector.getAt(1)) // 'g'
+
+log(
+  myVector
+    .setAt(2, 'p')
+    .addAt(0, 'm', 'n ')
+    .addAtReverse(0, 'y', 'z ')
+    .addAt(3, 'j', ' k', 'e')
+    .replace('e', 'o')
+    .removeAt(1)
+    .map(trim)
+    .filter(value => value != 'b')
+) // ['m', 'a', 'j', 'k', 'o', 'p', 'd', 'o', 'f', 'y', 'z']
+
+```
 
 ## Parallel and async/await
+```javascript
+{ milliseconds as ms } = import('core/units')
+{ parallel, delay } = import('core/processing')
+{ get } = import('core/requests')
+{ log } = import('core/console')
+
+await delay(ms(350))
+
+[a, b] = await parallel(
+  async () => await get('https://example.com/a.json'),
+  async () => await get('https://example.com/b.json'),
+)
+
+log(a + b)
+```
 
 ## Function and parameter validation
 ```javascript
