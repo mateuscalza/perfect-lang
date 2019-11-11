@@ -10,7 +10,7 @@
 * Keep it simple
 * Be reactive
 
-## Powerful math
+## Math with units
 ```javascript
 { centimeters as cm, meters as m, int } = import('core/units')
 { log } = import('core/console')
@@ -19,10 +19,10 @@
 divider = int(3) // Implicit
 
 // Value
-myValue = 1.45 * (m(9) + cm(3))
+myValue = m(9) + cm(3)  // Default operators handle default units
 
 // Result
-float myResult = myMultiplier / divider // Default operators handle default units
+myResult = myMultiplier / divider
 log(cm(myResult))
 ```
 
