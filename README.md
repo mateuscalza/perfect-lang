@@ -195,7 +195,7 @@ log(butlers)
 ## Immutable by design
 ```javascript
 { vector } = import('core/units')
-{ trim } = import('core/string')
+{ trim, concatenate } = import('core/string')
 
 myVector = vector(['a', 'b', 'c', 'd', 'e', 'f'])
 
@@ -205,9 +205,8 @@ newVector = myVector.setAt(1, 'g')
 log(myVector.getAt(1)) // 'b'
 log(newVector.getAt(1)) // 'g'
 
-log(
-  myVector
-    .setAt(2, 'p')
+newVector = myVector
+    .setAt(2, 'g')
     .addAt(0, 'm', 'n ')
     .addAtReverse(0, 'y', 'z ')
     .addAt(3, 'j', ' k', 'e')
@@ -215,7 +214,10 @@ log(
     .removeAt(1)
     .map(trim)
     .filter(value => value != 'b')
-) // ['m', 'a', 'j', 'k', 'o', 'p', 'd', 'o', 'f', 'y', 'z']
+log(newVector) // ['m', 'a', 'j', 'k', 'o', 'g', 'd', 'o', 'f', 'y', 'z']
+log(newVector.head(4)) // ['m', 'a', 'j', 'k']
+log(newVector.tail(3)) // ['f', 'y', 'z']
+log(newVector.reduce(concatenate, '')) // 'majkogdofyz'
 
 ```
 
