@@ -48,7 +48,7 @@ log('Capacity', liters(totalVolume))
 ```javascript
 { log } = import('core/console')
 
-// No variables, no constants. Everything is a symbol
+// No variables, no constants, no undefined. Everything is a symbol
 // The transpiler simplify and create a equation for each symbol
 // Each provided line, symbols are near to result
 
@@ -59,6 +59,20 @@ y - z = 2
 log(x) // 1
 log(y) // 2.5
 log(z) // 0.5
+```
+
+## Especial formats
+```
+{ expression as exp, hexadecimal as hex, binary as bin } = import('core/numbers')
+{ regularExpression as reg } = import('core/string')
+{ pathMatcher as path } = import('core/http')
+
+hex`3498db`
+bin`10001`
+reg`[a-z]+`
+exp`23 + 3${x} = 33`
+path`/books/:id`
+
 ```
 
 ## SIMD and GPU
@@ -84,15 +98,15 @@ log('Result: ', result)
 ```javascript
 { lines } = import('core/filesystem')
 { map, filter, log } = import('core/observables')
-{ meters } = import('core/units')
+{ squaredMeters as m2 } = import('core/units')
 
 lines('./resouces/terrains.csv')
   .pipe(
     // Skip header line
-    filter((line, lineIndex) => lineIndex !== 0),
+    filter((line, lineIndex) => lineIndex != 0),
     
     // Map
-    map([width, height] => meters(width * height)),
+    map([width, height] => m2(width * height)),
     
     // Log
     log(),
@@ -104,21 +118,22 @@ lines('./resouces/terrains.csv')
 { polar, imaginary as j, degrees } = import('core/units')
 { log } = import('core/console')
 
-results = solve(
-  x + 13 * polar(14.5, degrees(45)) == 16j - 27,
-)
+x + 13 * polar(14.5, degrees(45)) = 16j - 27
 
-log(results.x) // Rectangular result
-log(polar(results.x)) // Polar result
+log(x) // Rectangular result
+log(polar(x)) // Polar result
 ```
 
 ## Logical test
 ```javascript
 { module as mod } = import('core/math')
+{ prompt } = import('core/console')
+
+x = int(prompt('x'))
 
 if (100 < x < 300) {
 
-} else if (x in [7, 15, 37] or mod(x, 2) == 0) {
+} else if ([7, 15, 37].has(x) or mod(x, 2) == 0) {
 
 } else {
 
@@ -127,14 +142,13 @@ if (100 < x < 300) {
 
 ## Server, markup and switch
 ```javascript
-{ listen, pathMatch, errors } = import('core/http')
+{ listen, pathMatch as path, errors } = import('core/http')
 { div, h1, a } = import('core/utils/html')
 { do } = import('core/observables')
 
 listen(8080)
   .pipe(
-  
-    do({ request, response }) => {
+    do(({ request, response }) => {
       switch request.path {
         // Exact string
         case '/' {
@@ -147,13 +161,12 @@ listen(8080)
         }
 
         // RegExp
-        case /\/user\/([0-9]+)/i as result {
+        case reg`\/user\/([0-9]+)`.insensitive() as result {
           response.text(`Asking for user number ${result.matches[0]}`)
-
         }
 
-        // Function
-        case pathMatch('/books/:number') as result {
+        // Path
+        case path`/books/:number` as result {
           response.text(`Asking for book number ${result.number}`)
         }
 
@@ -173,15 +186,11 @@ Export
 ```javascript
 { string } = import('core/units')
 
-person: unit = ({
+person: unit = {
   name: string
-}) => ({
-  name,
-}) 
-
-add: operator = (a: person, b: person) {
-  return [a, b]
 }
+
+add: operator<1> = (a: person, b: person) => [a, b]
 
 return {
   person,
@@ -194,12 +203,12 @@ Import
 { person, add as + } = import('local/person')
 { log } = import('core/console')
 
-alfred = person({
+alfred: person = {
   name: 'Alfred',
-})
-jarvis = person({
+}
+jarvis: person = {
   name: 'Jarvis',
-})
+}
 
 butlers = alfred + jarvis
 
@@ -254,7 +263,7 @@ log(a + b)
 
 ## Function and parameter validation
 ```javascript
-{ int, float, string } = import('core/units')
+{ integer as int, float, string } = import('core/units')
 { log } = import('core/console')
 
 function greetings(string(lastName).required().minLength(3).maxLength(50), string(pronoun).minLength(3).maxLength(50) = '') {
@@ -266,16 +275,16 @@ greetings('Calza', 'Mr.')
 
 ## Custom units
 ```javascript
-{ int, float } = import('core/units')
+{ integer as int, float } = import('core/units')
 { log } = import('core/console')
 
 // Custom unit describing literal objects
-unit euroOptions {
-  float(dollarCurrent) = 1
+euroOptions: unit = {
+  dollarCurrent: float = 1
 }
 
 // Custom unit called as a function
-unit function euro(int(value) = 0, euroOptions(options)) {
+euro: unit = (value: int = 0, options: euroOptions) => {
   return {
     value,
     asDollars: () => value * options.dollarCurrent
@@ -292,12 +301,12 @@ log(myMoney.asDollars())
 { log } = import('core/console')
 { span } = import('core/utils/html')
 
-unit currencyOptions {
-  string(prefix) = '$'
+currencyOptions: unit = {
+  prefix: string = '$'
 }
 
 // Custom unit called as component
-unit function currency(value, currencyOptions(options)) {
+currency = unit = (value, options: currencyOptions) => {
   return (
     <span>{`${options.prefix} ${value}`}</span>
   )
