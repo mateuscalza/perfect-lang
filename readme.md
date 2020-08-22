@@ -28,17 +28,17 @@ log(cm(myResult))
 
 ## Multiple units
 
-```
-{ millimeter as mm, centimeters as cm, meters as m, cubicMeters as m3, liters, integer } = import('core/units')
+```javascript
+{ millimeter as mm, centimeters as cm, meters as m, cubicMeters as m3, liters } = import('core/units')
 { log } = import('core/console')
 
 width = 120cm
-height = 2m
+height = 2m * 27
 depth = 23mm
 
-boxVolume: m3 = width * height * depth
+boxesVolume: m3 = width * height * depth
 sphereVolume = 523m3
-totalVolume = boxVolume + sphereVolume
+totalVolume = boxesVolume + sphereVolume
 
 log('Capacity', liters(totalVolume))
 ```
@@ -62,7 +62,8 @@ log(z) // 0.5
 ```
 
 ## Especial formats
-```
+
+```javascript
 { expression as exp, hexadecimal as hex, binary as bin } = import('core/numbers')
 { regularExpression as reg } = import('core/string')
 { pathMatcher as path } = import('core/http')
@@ -95,6 +96,7 @@ log('Result: ', result)
 ```
 
 ## Observables and filesystem
+
 ```javascript
 { lines } = import('core/filesystem')
 { map, filter, log } = import('core/observables')
@@ -114,6 +116,7 @@ lines('./resouces/terrains.csv')
 ```
 
 ## Complex (imaginary) numbers
+
 ```javascript
 { polar, imaginary as j, degrees } = import('core/units')
 { log } = import('core/console')
@@ -125,6 +128,7 @@ log(polar(x)) // Polar result
 ```
 
 ## Logical test
+
 ```javascript
 { module as mod } = import('core/math')
 { prompt } = import('core/console')
@@ -141,6 +145,7 @@ if (100 < x < 300) {
 ```
 
 ## Server, markup and switch
+
 ```javascript
 { listen, pathMatch as path, errors } = import('core/http')
 { div, h1, a } = import('core/utils/html')
