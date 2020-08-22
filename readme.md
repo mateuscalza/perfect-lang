@@ -26,6 +26,23 @@ myResult = myValue / divider
 log(cm(myResult))
 ```
 
+## Multiple units
+
+```
+{ millimeter as mm, centimeters as cm, meters as m, cubicMeters as m3, liters, integer } = import('core/units')
+{ log } = import('core/console')
+
+width = 120cm
+height = 2m
+depth = 23mm
+
+boxVolume: m3 = width * height * depth
+sphereVolume = 523m3
+totalVolume = boxVolume + sphereVolume
+
+log('Capacity', liters(totalVolume))
+```
+
 ## Symbolic math
 
 ```javascript
