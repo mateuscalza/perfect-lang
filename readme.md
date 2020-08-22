@@ -1,48 +1,51 @@
 # The perfect programming language
 
 ## Principles
+
 * Aligned to the current reality
 * Highly readable
 * Focused on productivity
 * Simple and beauty math
 * Never repeat yourself
-* Goodbye callbacks, hello observables!
 * Keep it simple
-* Be reactive
 
 ## Math with units
+
 ```javascript
-{ centimeters as cm, meters as m, int } = import('core/units')
+{ centimeters as cm, meters as m, integer } = import('core/units')
 { log } = import('core/console')
 
-// Divider
-divider = int(3) // Implicit
-
 // Value
-myValue = m(9) + cm(3)  // Default operators handle default units
+myValue = 9m + 3cm  // Default operators handle default units
+
+// Divider
+divider: integer = 3 // Explicit type
 
 // Result
 myResult = myValue / divider
 log(cm(myResult))
 ```
 
-## GPU
+## Symbolic math
+
 ```javascript
-{ float } = import('core/gpu/units')
-{ multiply as * } = import('core/gpu/math') // Custom operator
-{ pi as π } = import('core/math/constants')
-{ squaredRoot } = import('core/math')
 { log } = import('core/console')
 
-x = float(123.45678) // Stored on GPU memory
-y = squaredRoot(π) // Stored on RAM
+// No variables, no constants. Everything is a symbol
+// The transpiler simplify and create a equation for each symbol
+// Each provided line, symbols are near to result
 
-result = x * y // Copy y to GPU memory and process on GPU, because * is a GPU operator
+-6x - 4 * (x - y) = 0
+4*(y - x) - 12z = 0
+y - z = 2
 
-log('Result:', result)
+log(x) // 1
+log(y) // 2.5
+log(z) // 0.5
 ```
 
 ## SIMD and GPU
+
 ```javascript
 { percent as %, vector } = import('core/gpu/units')
 { simd } = import('core/gpu')
@@ -52,11 +55,12 @@ log('Result:', result)
 
 a = vector([1, 2, 3, 4])
 b = vector([5, 6, 7, 8])
-weigth = %(20)
+weigth = 20%
 
-sumResult = simd(a, b, (aItem, bItem) => aValue + bValue * weigth)
+result = simd(a, b, (aItem, bItem) => aValue + bValue * weigth)
+// With default names, is the same of: sumResult = simd(a, b, (aItem, bItem) => add(aValue, multiply(bValue, weigth)))
 
-log('Result: ', sumResult)
+log('Result: ', result)
 ```
 
 ## Observables and filesystem
@@ -76,20 +80,6 @@ lines('./resouces/terrains.csv')
     // Log
     log(),
   )
-```
-
-## Algebra
-```javascript
-{ solve, equal as == } = import('core/math/algebra')
-{ log } = import('core/console')
-
-results = solve(
-    -6x - 4(x - y) == 0, // Undefined vars is a 'unknown' type by default
-    4(y - x) - 12z == 0, // * implicit
-    y - z == 2,
-)
-
-log(results) // Literal object with x, y and z results
 ```
 
 ## Complex (imaginary) numbers
@@ -164,11 +154,15 @@ listen(8080)
 
 Export
 ```javascript
-unit person {
-  string(name).required(),
-}
+{ string } = import('core/units')
 
-operator function add(person(a), person(b)) {
+person: unit = ({
+  name: string
+}) => ({
+  name,
+}) 
+
+add: operator = (a: person, b: person) {
   return [a, b]
 }
 
